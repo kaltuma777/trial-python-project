@@ -25,11 +25,11 @@ def create_employees(num_employees):
   employee = {'job' : fake.job ()}
   employee = {'department': fake.random_elements(elements= ('IT','HR', 'Marketing', 'Finance'))}
   employee = {'role' : fake.random_elements(elements= ('Manager', 'Analyst', 'Developer','Associate'))}
-  employee = {'salary' : fake.random_init(min=30000, max=150000, step=1000)}
+  employee = {'salary' : fake.random_int(min=30000, max=150000, step=1000)}
   employee_list.append(employee)
-  return employee_list
+  return pd.dataframe 
 
-print(create_employees(2))
+print(create_employees(7))
 
 
 
