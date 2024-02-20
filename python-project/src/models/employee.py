@@ -4,6 +4,7 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 from faker import Faker
 import random
+import pandas as pd
 
 Base = declarative_base()
 
@@ -14,36 +15,37 @@ fake = Faker (locale='en_US')
 
 # Function for employees
 def create_employees(num_employees):
-#an empty list to add emloyees dictionaries
- employee_list =[]
+    #an empty list to add employees dictionaries
+    employee_list = []
 
-#employees dictionary
- for i in range(1,num_employees):
-  employee = {}
-  employee = {'first_name': fake.first_name()}
-  employee = {'last_name': fake.last_name()}
-  employee = {'job' : fake.job ()}
-  employee = {'department': fake.random_elements(elements= ('IT','HR', 'Marketing', 'Finance'))}
-  employee = {'role' : fake.random_elements(elements= ('Manager', 'Analyst', 'Developer','Associate'))}
-  employee = {'salary' : fake.random_int(min=30000, max=150000, step=1000)}
-  employee_list.append(employee)
-  return pd.dataframe 
+    for i in range(num_employees):
+        # employees dictionary
+        employee = {
+            'ssn': fake.ssn(),
+            'first_name': fake.first_name(),
+            'last_name': fake.last_name(),
+            'job': fake.job(),
+            'department': fake.random_element(elements=('IT', 'HR', 'Marketing', 'Finance')),
+            'role': fake.random_element(elements=('Manager', 'Analyst', 'Developer', 'Associate')),
+            'salary': fake.random_int(min=30000, max=150000, step=1000)
+        }
+        employee_list.append(employee)
 
-print(create_employees(7))
+    return pd.DataFrame(employee_list)
 
-
+print(create_employees(num_employees=77))
 
 class Employee(Base):
     __tablename__ = 'employees'
 
-    id = Column(Integer, primary_key=True)
+    ssn = Column(Integer, primary_key=True)
     firstname = Column(String)
     lastname = Column(String)
     job = Column(String)
     department = Column(String)
 
-    def __init__(self, id, firstname, lastname,job, department):
-        self.id = id
+    def __init__(self, ssn, firstname, lastname,job, department):
+        self.ssn = ssn
         self.firstname = firstname
         self.lastname = lastname
         self.job = job
